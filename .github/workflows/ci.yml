@@ -1,0 +1,24 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: payguard
+          POSTGRES_PASSWORD: payguard
+          POSTGRES_DB: payguard
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U payguard" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PG_URL: jdbc:postgresql://localhost:5432/payguard
+      PG_USER: payguard
+      PG_PASSWORD: payguard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "21", cache: maven }
+      - run: mvn -B verify

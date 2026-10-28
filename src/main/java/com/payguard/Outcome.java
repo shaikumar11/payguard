@@ -1,0 +1,5 @@
+package com.payguard;
+
+public enum Outcome {
+    COMPLETED, HELD_FOR_REVIEW, DECLINED_RISK, INSUFFICIENT_FUNDS, REJECTED_BY_REVIEWER
+}
